@@ -1,0 +1,8 @@
+/vendor/
+
+# IDE integration
+/.idea/*
+!/.idea/runConfigurations/
+!/.idea/modules.xml
+!/.idea/*.iml
+!/.idea/go.imports.xml
