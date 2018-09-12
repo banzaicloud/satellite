@@ -1,12 +1,12 @@
 package api
 
 import (
-    "github.com/banzaicloud/whereami/config"
-    "github.com/sirupsen/logrus"
+	"github.com/banzaicloud/whereami/config"
+	"github.com/sirupsen/logrus"
 )
 
 var log logrus.FieldLogger
 
 func init() {
-    log = config.Logger()
+	log = config.Logger()
 }
