@@ -8,14 +8,14 @@ import (
 )
 
 type IdentifyAzure struct {
-	log logrus.FieldLogger
+	Log logrus.FieldLogger
 }
 
 func (a *IdentifyAzure) Identify() (string, error) {
 	data, err := ioutil.ReadFile("/sys/class/dmi/id/sys_vendor")
 	if err != nil {
-		logrus.Errorf("Something happened during reading a file: %s", err.Error())
-		return "", err
+		a.Log.Errorf("Something happened during reading a file: %s", err.Error())
+		return api.Unknown, err
 	}
 	if strings.Contains(string(data), "Microsoft Corporation") {
 		return api.Azure, nil

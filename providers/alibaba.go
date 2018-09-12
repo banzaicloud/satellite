@@ -8,14 +8,14 @@ import (
 )
 
 type IdentifyAlibaba struct {
-	log logrus.FieldLogger
+	Log logrus.FieldLogger
 }
 
 func (a *IdentifyAlibaba) Identify() (string, error) {
 	data, err := ioutil.ReadFile("/sys/class/dmi/id/product_name")
 	if err != nil {
-		logrus.Errorf("Something happened during reading a file: %s", err.Error())
-		return "", err
+		a.Log.Errorf("Something happened during reading a file: %s", err.Error())
+		return api.Unknown, err
 	}
 	if strings.Contains(string(data), "Alibaba Cloud") {
 		return api.Alibaba, nil

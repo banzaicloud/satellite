@@ -2,7 +2,6 @@ package providers
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/banzaicloud/whereami/api"
 	"github.com/sirupsen/logrus"
 	"io/ioutil"
@@ -20,14 +19,14 @@ type instanceIdentityResponse struct {
 }
 
 type IdentifyAmazon struct {
-	log logrus.FieldLogger
+	Log logrus.FieldLogger
 }
 
 func (a *IdentifyAmazon) Identify() (string, error) {
 	data, err := ioutil.ReadFile("/sys/class/dmi/id/product_version")
 	if err != nil {
-		logrus.Errorf("Something happened during reading a file: %s", err.Error())
-		return "", err
+		a.Log.Errorf("Something happened during reading a file: %s", err.Error())
+		return api.Unknown, err
 	}
 	if strings.Contains(string(data), "amazon") {
 		return api.Amazon, nil
@@ -35,23 +34,39 @@ func (a *IdentifyAmazon) Identify() (string, error) {
 	return api.Unknown, nil
 }
 
-func IdentifyAmazonViaMetadataServer() error {
-	//r := instanceIdentityResponse{}
-	//req, err := http.NewRequest("GET", "http://169.254.169.254/latest/dynamic/instance-identity/document", nil)
-	//if err != nil {
-	//   a.log.Errorf("could not create a new amazon request %s", err.Error())
-	//}
-	//resp, err := http.DefaultClient.Do(req)
-	//if err != nil {
-	//    a.log.Errorf("Something happened during the request %s", err.Error())
-	//}
-	//defer resp.Body.Close()
-	//body, err := ioutil.ReadAll(resp.Body)
-	//if err != nil {
-	//    a.log.Errorf("Something happened during parsing the response body %s", err.Error())
-	//}
-	//err = json.Unmarshal(body, &r)
-	//if err != nil {
-	//    a.log.Errorf("Something happened during unmarshalling the response body %s", err.Error())
-	//}
+func IdentifyAmazonViaMetadataServer(detected chan<- string, log logrus.FieldLogger) {
+	r := instanceIdentityResponse{}
+	req, err := http.NewRequest("GET", "http://169.254.169.254/latest/dynamic/instance-identity/document", nil)
+	if err != nil {
+		log.Errorf("could not create a new amazon request %s", err.Error())
+		detected <- api.Unknown
+		return
+	}
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Errorf("Something happened during the request %s", err.Error())
+		detected <- api.Unknown
+		return
+	}
+	if resp.StatusCode == http.StatusOK {
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			log.Errorf("Something happened during parsing the response body %s", err.Error())
+			detected <- api.Unknown
+			return
+		}
+		err = json.Unmarshal(body, &r)
+		if err != nil {
+			log.Errorf("Something happened during unmarshalling the response body %s", err.Error())
+			detected <- api.Unknown
+			return
+		}
+		if strings.HasPrefix(r.ImageID, "ami-") &&
+			strings.HasPrefix(r.InstanceID, "i-") {
+			detected <- api.Amazon
+			return
+		}
+	}
+
 }
