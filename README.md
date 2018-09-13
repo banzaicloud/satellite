@@ -10,6 +10,8 @@
 
 # NOAA
 
+NOAA is widely used across the [Pipeline](https://github.com/banzaicloud/pipeline) platform. We are cloud agnostic but at the same time cloud aware - using the [Banzai Cloud](https://banzaicloud.com) Kubernetes operators all our code relies on NOAA to determine the **cloud provider** and *inject* the cloud specific code.
+
 With this simple service the cloud provider can be determined easily with a simple HTTP call.
 
 ## Supported Cloud Providers
