@@ -50,10 +50,7 @@ func DetermineProvider(c *gin.Context, log logrus.FieldLogger) {
 			return
 		}
 	}
-	identifiedProv, err = providers.IdentifySlow{Log: log}.Identify()
-	if err != nil {
-
-	}
+	identifiedProv, _ = providers.IdentifySlow{Log: log}.Identify()
 	if identifiedProv != Unknown {
 		c.JSON(http.StatusOK, &ProviderInfo{
 			Name: identifiedProv,
