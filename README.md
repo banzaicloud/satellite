@@ -2,7 +2,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/banzaicloud/whereami)](https://goreportcard.com/report/github.com/banzaicloud/whereami)
 [![Docker Automated build](https://img.shields.io/docker/automated/banzaicloud/whereami.svg)](https://hub.docker.com/r/banzaicloud/whereami/)\
 
-*NOAA is the latest generation of polar-orbiting, non-geosynchronous, environmental satellites. NOAA-20 was launched on November 18, 2017 to give meteorologists information on clouds (among many others).*
+*NOAA is the latest generation of polar-orbiting, non-geosynchronous, environmental satellites. NOAA-20 was launched on November 18, 2017 to give meteorologists information on clouds (among many others) and surfers on waves.*
 
 *NOAA is a Golang library and RESTful API to determine the host cloud provider with a simple HTTP call. Behind the scenes it uses the file system and provider metadata to properly identify the cloud provider.*
 
