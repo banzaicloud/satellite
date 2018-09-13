@@ -1,7 +1,7 @@
 package providers
 
 import (
-	"github.com/banzaicloud/whereami/api"
+	"github.com/banzaicloud/whereami/defaults"
 	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
@@ -19,25 +19,25 @@ func (a *IdentifyAlibaba) Identify() (string, error) {
 	data, err := ioutil.ReadFile("/sys/class/dmi/id/product_name")
 	if err != nil {
 		a.Log.Errorf("Something happened during reading a file: %s", err.Error())
-		return api.Unknown, err
+		return defaults.Unknown, err
 	}
 	if strings.Contains(string(data), "Alibaba Cloud") {
-		return api.Alibaba, nil
+		return defaults.Alibaba, nil
 	}
-	return api.Unknown, nil
+	return defaults.Unknown, nil
 }
 
 func IdentifyAlibabaViaMetadataServer(detected chan<- string, log logrus.FieldLogger) {
 	req, err := http.NewRequest("GET", "http://100.100.100.200/latest/meta-data/instance/instance-type", nil)
 	if err != nil {
 		log.Errorf("could not create proper http request %s", err.Error())
-		detected <- api.Unknown
+		detected <- defaults.Unknown
 		return
 	}
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		log.Errorf("Something happened during the request %s", err.Error())
-		detected <- api.Unknown
+		detected <- defaults.Unknown
 		return
 	}
 	if resp.StatusCode == http.StatusOK {
@@ -45,11 +45,11 @@ func IdentifyAlibabaViaMetadataServer(detected chan<- string, log logrus.FieldLo
 		body, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			log.Errorf("Something happened during parsing the response body %s", err.Error())
-			detected <- api.Unknown
+			detected <- defaults.Unknown
 			return
 		}
 		if strings.HasPrefix(string(body), "ecs.") {
-			detected <- api.Alibaba
+			detected <- defaults.Alibaba
 		}
 	}
 }

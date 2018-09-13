@@ -1,7 +1,7 @@
 package providers
 
 import (
-	"github.com/banzaicloud/whereami/api"
+	"github.com/banzaicloud/whereami/defaults"
 	"github.com/sirupsen/logrus"
 )
 
@@ -28,9 +28,9 @@ func (s *IdentifySlow) Identify() (string, error) {
 	}
 	for range prov {
 		d := <-detected
-		if d != api.Unknown {
+		if d != defaults.Unknown {
 			return d, nil
 		}
 	}
-	return api.Unknown, nil
+	return defaults.Unknown, nil
 }

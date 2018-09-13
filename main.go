@@ -24,5 +24,5 @@ func main() {
 	router := gin.Default()
 
 	router.GET("/whereami", api.DetermineProvider)
-	router.Run()
+	router.Run(":8888")
 }

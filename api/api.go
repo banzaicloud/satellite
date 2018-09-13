@@ -1,9 +1,9 @@
 package api
 
 import (
+	"github.com/banzaicloud/whereami/defaults"
 	"github.com/banzaicloud/whereami/providers"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"net/http"
 )
 
@@ -15,17 +15,7 @@ type ProviderInfo struct {
 	Name string `json:"name"`
 }
 
-const (
-	Amazon       = "amazon"
-	Alibaba      = "alibaba"
-	Azure        = "azure"
-	Google       = "google"
-	Oracle       = "oracle"
-	DigitalOcean = "digitalocean"
-	Unknown      = "unknown"
-)
-
-func DetermineProvider(c *gin.Context, log logrus.FieldLogger) {
+func DetermineProvider(c *gin.Context) {
 
 	identifiers := []Identifier{
 		&providers.IdentifyAzure{Log: log},
@@ -35,7 +25,7 @@ func DetermineProvider(c *gin.Context, log logrus.FieldLogger) {
 		&providers.IdentifyGoogle{Log: log},
 		&providers.IdentifyAlibaba{Log: log},
 	}
-	identifiedProv := Unknown
+	identifiedProv := defaults.Unknown
 	var err error
 	for _, prov := range identifiers {
 		identifiedProv, err = prov.Identify()
@@ -43,15 +33,15 @@ func DetermineProvider(c *gin.Context, log logrus.FieldLogger) {
 			log.Warn(err)
 			continue
 		}
-		if identifiedProv != Unknown {
+		if identifiedProv != defaults.Unknown {
 			c.JSON(http.StatusOK, &ProviderInfo{
 				Name: identifiedProv,
 			})
 			return
 		}
 	}
-	identifiedProv, _ = providers.IdentifySlow{Log: log}.Identify()
-	if identifiedProv != Unknown {
+	identifiedProv, _ = (&providers.IdentifySlow{Log: log}).Identify()
+	if identifiedProv != defaults.Unknown {
 		c.JSON(http.StatusOK, &ProviderInfo{
 			Name: identifiedProv,
 		})
