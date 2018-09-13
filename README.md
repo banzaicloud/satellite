@@ -8,7 +8,7 @@
 
 ---
 
-# NOOA
+# NOAA
 
 With this simple service the cloud provider can be determined easily with a simple HTTP call.
 
