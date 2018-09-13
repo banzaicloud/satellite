@@ -5,10 +5,12 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// IdentifySlow struct holds the logger
 type IdentifySlow struct {
 	Log logrus.FieldLogger
 }
 
+// Identify tries to identify the provider via calling the metadata service
 func (s *IdentifySlow) Identify() (string, error) {
 
 	detected := make(chan string)

@@ -16,10 +16,12 @@ type oracleMetadataResponse struct {
 	OkeTM string `json:"oke-tm"`
 }
 
+// IdentifyOracle struct holds the logger
 type IdentifyOracle struct {
 	Log logrus.FieldLogger
 }
 
+// Identify tries to identify Oracle provider by reading the /sys/class/dmi/id/chassis_asset_tag file
 func (a *IdentifyOracle) Identify() (string, error) {
 	data, err := ioutil.ReadFile("/sys/class/dmi/id/chassis_asset_tag")
 	if err != nil {
@@ -32,6 +34,7 @@ func (a *IdentifyOracle) Identify() (string, error) {
 	return defaults.Unknown, nil
 }
 
+// IdentifyOracleViaMetadataServer tries to identify Oracle via metadata server
 func IdentifyOracleViaMetadataServer(detected chan<- string, log logrus.FieldLogger) {
 	r := oracleMetadataResponse{}
 	req, err := http.NewRequest("GET", "http://169.254.169.254/opc/v1/instance/metadata/", nil)

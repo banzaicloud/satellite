@@ -18,10 +18,12 @@ type instanceIdentityResponse struct {
 	InstanceID string `json:"instanceId"`
 }
 
+// IdentifyAmazon stuct holds the logger
 type IdentifyAmazon struct {
 	Log logrus.FieldLogger
 }
 
+// Identify tries to identify Amazon provider by reading the /sys/class/dmi/id/product_version file
 func (a *IdentifyAmazon) Identify() (string, error) {
 	data, err := ioutil.ReadFile("/sys/class/dmi/id/product_version")
 	if err != nil {
@@ -34,6 +36,7 @@ func (a *IdentifyAmazon) Identify() (string, error) {
 	return defaults.Unknown, nil
 }
 
+// IdentifyAmazonViaMetadataServer tries to identify Amazon via metadata server
 func IdentifyAmazonViaMetadataServer(detected chan<- string, log logrus.FieldLogger) {
 	r := instanceIdentityResponse{}
 	req, err := http.NewRequest("GET", "http://169.254.169.254/latest/dynamic/instance-identity/document", nil)

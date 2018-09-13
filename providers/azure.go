@@ -11,10 +11,12 @@ import (
 //Used docs
 // https://azure.microsoft.com/en-us/blog/announcing-general-availability-of-azure-instance-metadata-service/
 
+// IdentifyAzure struct holds the logger
 type IdentifyAzure struct {
 	Log logrus.FieldLogger
 }
 
+// Identify tries to identify Azure provider by reading the /sys/class/dmi/id/sys_vendor file
 func (a *IdentifyAzure) Identify() (string, error) {
 	data, err := ioutil.ReadFile("/sys/class/dmi/id/sys_vendor")
 	if err != nil {
@@ -27,6 +29,7 @@ func (a *IdentifyAzure) Identify() (string, error) {
 	return defaults.Unknown, nil
 }
 
+// IdentifyAzureViaMetadataServer tries to identify Azure via metadata server
 func IdentifyAzureViaMetadataServer(detected chan<- string, log logrus.FieldLogger) {
 	req, err := http.NewRequest("GET", "http://169.254.169.254/metadata/instance?api-version=2017-12-01", nil)
 	if err != nil {

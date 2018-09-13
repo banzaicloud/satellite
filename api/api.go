@@ -7,14 +7,17 @@ import (
 	"net/http"
 )
 
+// Identifier is the common interface
 type Identifier interface {
 	Identify() (string, error)
 }
 
+// ProviderInfo holds the provider name
 type ProviderInfo struct {
 	Name string `json:"name"`
 }
 
+// DetermineProvider determines the cloud provider
 func DetermineProvider(c *gin.Context) {
 
 	identifiers := []Identifier{

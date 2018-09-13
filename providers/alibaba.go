@@ -11,10 +11,12 @@ import (
 //Used docs
 //https://www.alibabacloud.com/help/faq-detail/49122.htm
 
+// IdentifyAlibaba struct holds the logger
 type IdentifyAlibaba struct {
 	Log logrus.FieldLogger
 }
 
+// Identify tries to identify Alibaba provider by reading the /sys/class/dmi/id/product_name file
 func (a *IdentifyAlibaba) Identify() (string, error) {
 	data, err := ioutil.ReadFile("/sys/class/dmi/id/product_name")
 	if err != nil {
@@ -27,6 +29,7 @@ func (a *IdentifyAlibaba) Identify() (string, error) {
 	return defaults.Unknown, nil
 }
 
+// IdentifyAlibabaViaMetadataServer tries to identify Alibaba via metadata server
 func IdentifyAlibabaViaMetadataServer(detected chan<- string, log logrus.FieldLogger) {
 	req, err := http.NewRequest("GET", "http://100.100.100.200/latest/meta-data/instance/instance-type", nil)
 	if err != nil {

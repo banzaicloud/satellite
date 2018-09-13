@@ -16,10 +16,12 @@ type digitalOceanMetadataResponse struct {
 	DropletID int `json:"droplet_id"`
 }
 
+// IdentifyDigitalOcean struct holds the logger
 type IdentifyDigitalOcean struct {
 	Log logrus.FieldLogger
 }
 
+// Identify tries to identify DigitalOcean provider by reading the /sys/class/dmi/id/sys_vendor file
 func (a *IdentifyDigitalOcean) Identify() (string, error) {
 	data, err := ioutil.ReadFile("/sys/class/dmi/id/sys_vendor")
 	if err != nil {
@@ -32,6 +34,7 @@ func (a *IdentifyDigitalOcean) Identify() (string, error) {
 	return defaults.Unknown, nil
 }
 
+// IdentifyDigitalOceanViaMetadataServer tries to identify DigitalOcean via metadata server
 func IdentifyDigitalOceanViaMetadataServer(detected chan<- string, log logrus.FieldLogger) {
 	r := digitalOceanMetadataResponse{}
 	req, err := http.NewRequest("GET", "http://169.254.169.254/metadata/v1.json", nil)

@@ -11,10 +11,12 @@ import (
 //Used Doc
 //https://cloud.google.com/compute/docs/storing-retrieving-metadata#endpoints
 
+// IdentifyGoogle stuct holds the logger
 type IdentifyGoogle struct {
 	Log logrus.FieldLogger
 }
 
+// Identify tries to identify Google provider by reading the /sys/class/dmi/id/product_name file
 func (a *IdentifyGoogle) Identify() (string, error) {
 	data, err := ioutil.ReadFile("/sys/class/dmi/id/product_name")
 	if err != nil {
@@ -27,6 +29,7 @@ func (a *IdentifyGoogle) Identify() (string, error) {
 	return defaults.Unknown, nil
 }
 
+// IdentifyGoogleViaMetadataServer tries to identify Google via metadata server
 func IdentifyGoogleViaMetadataServer(detected chan<- string, log logrus.FieldLogger) {
 	req, err := http.NewRequest("GET", "http://metadata.google.internal/computeMetadata/v1/instance/tags", nil)
 	if err != nil {
