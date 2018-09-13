@@ -2,11 +2,12 @@ package providers
 
 import (
 	"encoding/json"
-	"github.com/banzaicloud/whereami/defaults"
-	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
 	"strings"
+
+	"github.com/banzaicloud/noaa/defaults"
+	"github.com/sirupsen/logrus"
 )
 
 // Used docs

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/banzaicloud/whereami/api"
-	"github.com/banzaicloud/whereami/config"
+	"github.com/banzaicloud/noaa/api"
+	"github.com/banzaicloud/noaa/config"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
@@ -23,6 +23,6 @@ func main() {
 	logger.Info("WhereAmI initialization")
 	router := gin.Default()
 
-	router.GET("/whereami", api.DetermineProvider)
+	router.GET("/noaa", api.DetermineProvider)
 	router.Run(":8888")
 }
