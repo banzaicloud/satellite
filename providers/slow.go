@@ -1,7 +1,7 @@
 package providers
 
 import (
-	"github.com/banzaicloud/whereami/defaults"
+	"github.com/banzaicloud/noaa/defaults"
 	"github.com/sirupsen/logrus"
 )
 

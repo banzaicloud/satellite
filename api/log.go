@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/banzaicloud/whereami/config"
+	"github.com/banzaicloud/noaa/config"
 	"github.com/sirupsen/logrus"
 )
 

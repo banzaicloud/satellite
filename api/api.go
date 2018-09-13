@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/banzaicloud/whereami/defaults"
-	"github.com/banzaicloud/whereami/providers"
+	"github.com/banzaicloud/noaa/defaults"
+	"github.com/banzaicloud/noaa/providers"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
