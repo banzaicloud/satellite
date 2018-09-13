@@ -23,7 +23,7 @@ With this simple service the cloud provider can be determined easily with a simp
 
 ## API
 
-- GET "/whereami" -> {name: cloudprovider}
+- GET "/noaa" -> {name: cloudprovider}
 
 ## Helm chart
 
