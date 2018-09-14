@@ -1,15 +1,17 @@
 package config
 
 import (
-	"github.com/sirupsen/logrus"
 	"sync"
-)
 
-var logger *logrus.Logger
-var loggerOnce sync.Once
+	"github.com/sirupsen/logrus"
+)
 
 // Logger is a configured Logrus logger
 func Logger() *logrus.Logger {
+
+	var loggerOnce sync.Once
+	var logger *logrus.Logger
+
 	loggerOnce.Do(func() { logger = newLogger() })
 
 	return logger
