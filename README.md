@@ -1,6 +1,6 @@
 ![license](http://img.shields.io/badge/license-Apache%20v2-orange.svg)
-[![Go Report Card](https://goreportcard.com/badge/github.com/banzaicloud/whereami)](https://goreportcard.com/report/github.com/banzaicloud/whereami)
-[![Docker Automated build](https://img.shields.io/docker/automated/banzaicloud/whereami.svg)](https://hub.docker.com/r/banzaicloud/whereami/)
+[![Go Report Card](https://goreportcard.com/badge/github.com/banzaicloud/noaa)](https://goreportcard.com/report/github.com/banzaicloud/noaa)
+[![Docker Automated build](https://img.shields.io/docker/automated/banzaicloud/noaa.svg)](https://hub.docker.com/r/banzaicloud/noaa/)
 
 *NOAA is the latest generation of polar-orbiting, non-geosynchronous, environmental satellites. NOAA-20 was launched on November 18, 2017 to give meteorologists information on clouds (among many others) and surfers on waves.*
 
