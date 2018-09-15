@@ -29,6 +29,14 @@ With this simple service the cloud provider can be determined easily with a simp
 
 ## Helm chart
 
+You can deloy Noaa to a cloud based Kubernetes cluster using this [Helm chart](https://github.com/banzaicloud/banzai-charts/tree/master/noaa). 
+
+To install the chart from the Banzai Cloud chart repo:
+
+```
+$ helm install banzaicloud-stable/noaa
+```
+
 ## Examples
 
 The Banzai Cloud PVC operator uses Noaa in order to keep Helm charts cloud `agnostic`. For further details please check the [PVC operator](https://github.com/banzaicloud/pvc-operator/blob/master/README.md).
