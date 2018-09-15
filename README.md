@@ -29,6 +29,13 @@ With this simple service the cloud provider can be determined easily with a simp
 
 ## Helm chart
 
+## Examples
+
+The Banzai Cloud PVC operator uses Noaa in order to keep Helm charts cloud `agnostic`. For further details please check the [PVC operator](https://github.com/banzaicloud/pvc-operator/blob/master/README.md).
+
+This operator makes using [Kubernetes Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) easier on cloud providers, by dynamically creating the required accounts, classes and more. It allows to use exactly the same [Helm](https://helm.sh) chart on all the supported providers, there is no need to create cloud specific Helm charts.
+
+
 ## Contributing
 
 If you find this project useful here's how you can help:
