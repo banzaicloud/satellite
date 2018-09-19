@@ -34,6 +34,7 @@ You can deloy Noaa to a cloud based Kubernetes cluster using this [Helm chart](h
 To install the chart from the Banzai Cloud chart repo:
 
 ```
+$ helm repo add banzaicloud-stable http://kubernetes-charts.banzaicloud.com/branch/master
 $ helm install banzaicloud-stable/noaa
 ```
 
