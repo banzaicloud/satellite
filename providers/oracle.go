@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/banzaicloud/noaa/defaults"
+	"github.com/banzaicloud/satellite/defaults"
 	"github.com/sirupsen/logrus"
 )
 

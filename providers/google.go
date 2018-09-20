@@ -1,7 +1,7 @@
 package providers
 
 import (
-	"github.com/banzaicloud/noaa/defaults"
+	"github.com/banzaicloud/satellite/defaults"
 	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"

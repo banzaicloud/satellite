@@ -1,4 +1,4 @@
-EXECUTABLE ?= noaa
+EXECUTABLE ?= satellite
 IMAGE ?= banzaicloud/$(EXECUTABLE)
 TAG ?= dev-$(shell git log -1 --pretty=format:"%h")
 
@@ -58,7 +58,7 @@ push:
 	docker push $(IMAGE):$(TAG)
 
 build:
-	go build ./cmd/noaa/
+	go build ./cmd/satellite/
 
 build-all: check-fmt check-misspell lint vet build
 

@@ -3,8 +3,8 @@ package api
 import (
 	"net/http"
 
-	"github.com/banzaicloud/noaa/defaults"
-	"github.com/banzaicloud/noaa/providers"
+	"github.com/banzaicloud/satellite/defaults"
+	"github.com/banzaicloud/satellite/providers"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )

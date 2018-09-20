@@ -1,19 +1,19 @@
 package main
 
 import (
-	"github.com/banzaicloud/noaa/api"
-	"github.com/banzaicloud/noaa/config"
+	"github.com/banzaicloud/satellite/api"
+	"github.com/banzaicloud/satellite/config"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	logger := config.Logger()
-	logger.Info("Noaa initialization")
+	logger.Info("Satellite initialization")
 
 	router := gin.Default()
 
 	a := api.NewDetermineProviderApi(logger)
 
-	router.GET("/noaa", a.DetermineProvider)
+	router.GET("/satellite", a.DetermineProvider)
 	router.Run(":8888")
 }
