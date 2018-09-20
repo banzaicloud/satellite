@@ -2,12 +2,16 @@ FROM golang:1.11-alpine
 
 ADD . /go/src/github.com/banzaicloud/noaa
 WORKDIR /go/src/github.com/banzaicloud/noaa
-RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o /tmp/noaa main.go
+RUN apk update && apk add ca-certificates make git curl
 
-FROM alpine:3.6
+RUN make vendor
+RUN go build -o /tmp/noaa main.go
+
+FROM alpine:3.7
 
 COPY --from=0 /tmp/noaa /usr/local/bin/noaa
-RUN apk update && apk add ca-certificates
+COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+
 RUN adduser -D noaa
 
 USER noaa
