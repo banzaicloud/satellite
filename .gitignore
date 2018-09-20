@@ -1,8 +1,19 @@
+.DS_Store
+bin/*
+/productinfo
+conf/config.toml
+*.swp
+test.txt
 /vendor/
+/.licensei.cache
+client_test.go
 
 # IDE integration
 /.idea/*
-!/.idea/runConfigurations/
-!/.idea/modules.xml
+!/.idea/copyright/
 !/.idea/*.iml
+!/.idea/externalDependencies.xml
 !/.idea/go.imports.xml
+!/.idea/modules.xml
+!/.idea/runConfigurations/
+!/.idea/scopes/
