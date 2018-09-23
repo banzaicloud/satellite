@@ -6,12 +6,11 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+var loggerOnce sync.Once
+var logger *logrus.Logger
+
 // Logger is a configured Logrus logger
 func Logger() *logrus.Logger {
-
-	var loggerOnce sync.Once
-	var logger *logrus.Logger
-
 	loggerOnce.Do(func() { logger = newLogger() })
 
 	return logger
