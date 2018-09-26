@@ -2,8 +2,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/banzaicloud/satellite)](https://goreportcard.com/report/github.com/banzaicloud/satellite)
 [![Docker Automated build](https://img.shields.io/docker/automated/banzaicloud/satellite.svg)](https://hub.docker.com/r/banzaicloud/satellite/)
 
-
-*Satellite is a Golang library and RESTful API to determine the host cloud provider with a simple HTTP call. Behind the scenes it uses the file system and provider metadata to properly identify the cloud provider.*
+*Satellite is a Golang library and RESTful API that determines a host's cloud provider with a simple HTTP call. Behind the scenes, it uses file systems and provider metadata to properly identify cloud providers.*
 
 ---
 
