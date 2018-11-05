@@ -12,7 +12,7 @@
 <img src="docs/images/satellite_logo.jpg">
 </p>
 
-Satellite is widely used across the [Pipeline](https://github.com/banzaicloud/pipeline) platform. We are cloud agnostic but at the same time cloud aware - using the [Banzai Cloud](https://banzaicloud.com) Kubernetes operators all our code relies on Satellite to determine the **cloud provider** and *inject* the cloud specific code.
+Satellite is widely used across the [Banzai Cloud Pipeline](https://github.com/banzaicloud/pipeline) platform. We are cloud agnostic but at the same time cloud aware - using the [Banzai Cloud](https://banzaicloud.com) Kubernetes [operators](https://github.com/banzaicloud?utf8=✓&q=operator&type=&language=) all our code relies on Satellite to determine the **cloud provider** and *inject* the cloud specific code.
 
 With this simple service the cloud provider can be determined easily with a simple HTTP call.
 
