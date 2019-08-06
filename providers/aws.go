@@ -71,6 +71,10 @@ func IdentifyAmazonViaMetadataServer(detected chan<- string, log logrus.FieldLog
 			detected <- defaults.Amazon
 			return
 		}
+	} else {
+		log.Errorf("Something happened during the request with status %s", resp.Status)
+		detected <- defaults.Unknown
+		return
 	}
 
 }

@@ -67,5 +67,9 @@ func IdentifyDigitalOceanViaMetadataServer(detected chan<- string, log logrus.Fi
 		if r.DropletID > 0 {
 			detected <- defaults.DigitalOcean
 		}
+	} else {
+		log.Errorf("Something happened during the request with status %s", resp.Status)
+		detected <- defaults.Unknown
+		return
 	}
 }

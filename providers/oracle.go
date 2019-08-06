@@ -67,5 +67,9 @@ func IdentifyOracleViaMetadataServer(detected chan<- string, log logrus.FieldLog
 		if strings.Contains(r.OkeTM, "oke") {
 			detected <- defaults.Oracle
 		}
+	} else {
+		log.Errorf("Something happened during the request with status %s", resp.Status)
+		detected <- defaults.Unknown
+		return
 	}
 }

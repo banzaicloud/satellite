@@ -46,5 +46,9 @@ func IdentifyGoogleViaMetadataServer(detected chan<- string, log logrus.FieldLog
 	}
 	if resp.StatusCode == http.StatusOK {
 		detected <- defaults.Google
+	} else {
+		log.Errorf("Something happened during the request with status %s", resp.Status)
+		detected <- defaults.Unknown
+		return
 	}
 }
