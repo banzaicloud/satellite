@@ -46,5 +46,9 @@ func IdentifyAzureViaMetadataServer(detected chan<- string, log logrus.FieldLogg
 	}
 	if resp.StatusCode == http.StatusOK {
 		detected <- defaults.Azure
+	} else {
+		log.Errorf("Something happened during the request with status %s", resp.Status)
+		detected <- defaults.Unknown
+		return
 	}
 }

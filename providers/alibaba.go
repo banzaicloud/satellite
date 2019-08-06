@@ -54,5 +54,9 @@ func IdentifyAlibabaViaMetadataServer(detected chan<- string, log logrus.FieldLo
 		if strings.HasPrefix(string(body), "ecs.") {
 			detected <- defaults.Alibaba
 		}
+	} else {
+		log.Errorf("Something happened during the request with status %s", resp.Status)
+		detected <- defaults.Unknown
+		return
 	}
 }
