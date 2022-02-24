@@ -5,6 +5,7 @@ conf/config.toml
 *.swp
 test.txt
 /vendor/
+/build/
 /.licensei.cache
 client_test.go
 

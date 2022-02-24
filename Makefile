@@ -1,11 +1,24 @@
-EXECUTABLE ?= satellite
-IMAGE ?= banzaicloud/$(EXECUTABLE)
+# Project variables
+PACKAGE = github.com/banzaicloud/satellite
+BINARY_NAME ?= satellite
+DOCKER_IMAGE ?= banzaicloud/$(BINARY_NAME)
 TAG ?= dev-$(shell git log -1 --pretty=format:"%h")
 
 LD_FLAGS = -X "main.version=$(TAG)"
 GOFILES_NOVENDOR = $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 PKGS=$(shell go list ./... | grep -v /vendor)
 
+# Build variables
+BUILD_DIR ?= build
+VERSION ?= $(shell git symbolic-ref -q --short HEAD || git describe --tags --exact-match)
+COMMIT_HASH ?= $(shell git rev-parse --short HEAD 2>/dev/null)
+BUILD_DATE ?= $(shell date +%FT%T%z)
+LDFLAGS += -X main.version=${VERSION} -X main.commitHash=${COMMIT_HASH} -X main.buildDate=${BUILD_DATE}
+export GO111MODULE=on
+
+# Dependency versions
+GOLANGCI_VERSION = 1.40.0
+GOLANG_VERSION = 1.17
 
 .PHONY: _no-target-specified
 _no-target-specified:
@@ -28,22 +41,10 @@ license-check: bin/licensei ## Run license check
 license-cache: bin/licensei ## Generate license cache
 	@bin/licensei cache
 
-DEP_VERSION = 0.5.0
-bin/dep:
-	@mkdir -p ./bin/
-	@curl https://raw.githubusercontent.com/golang/dep/master/install.sh | INSTALL_DIRECTORY=./bin DEP_RELEASE_TAG=v${DEP_VERSION} sh
+all: clean fmt vet docker push
 
-.PHONY: vendor
-vendor: bin/dep ## Install dependencies
-	bin/dep ensure -vendor-only
-
-all: clean deps fmt vet docker push
-
-clean:
-	go clean -i ./...
-
-deps:
-	go get ./...
+clean: ## Clean the working area and the project
+	rm -rf bin/ ${BUILD_DIR}/ vendor/
 
 fmt:
 	@gofmt -w ${GOFILES_NOVENDOR}
@@ -52,13 +53,22 @@ vet:
 	@go vet -composites=false ./...
 
 docker:
-	docker build --rm -t $(IMAGE):$(TAG) .
+	docker build --rm -t $(DOCKER_IMAGE):$(TAG) .
 
 push:
-	docker push $(IMAGE):$(TAG)
+	docker push $(DOCKER_IMAGE):$(TAG)
 
-build:
-	go build ./cmd/satellite/
+build: ## Build a binary
+ifeq (${VERBOSE}, 1)
+	go env
+endif
+ifneq (${IGNORE_GOLANG_VERSION_REQ}, 1)
+	@printf "${GOLANG_VERSION}\n$$(go version | awk '{sub(/^go/, "", $$3);print $$3}')" | sort -t '.' -k 1,1 -k 2,2 -k 3,3 -g | head -1 | grep -q -E "^${GOLANG_VERSION}$$" || (printf "Required Go version is ${GOLANG_VERSION}\nInstalled: `go version`" && exit 1)
+endif
+
+	@$(eval GENERATED_BINARY_NAME = ${BINARY_NAME})
+	@$(if $(strip ${BINARY_NAME_SUFFIX}),$(eval GENERATED_BINARY_NAME = ${BINARY_NAME}-$(subst $(eval) ,-,$(strip ${BINARY_NAME_SUFFIX}))),)
+	go build ${GOARGS} -tags "${GOTAGS}" -ldflags "${LDFLAGS}" -o ${BUILD_DIR}/${GENERATED_BINARY_NAME} ${PACKAGE}
 
 build-all: check-fmt check-misspell lint vet build
 
@@ -71,15 +81,16 @@ check-misspell: install-misspell
 misspell: install-misspell
 	misspell -w ${GOFILES_NOVENDOR}
 
-lint: install-golint
-	golint -min_confidence 0.9 -set_exit_status $(PKGS)
+bin/golangci-lint: bin/golangci-lint-${GOLANGCI_VERSION}
+	@ln -sf golangci-lint-${GOLANGCI_VERSION} bin/golangci-lint
+bin/golangci-lint-${GOLANGCI_VERSION}:
+	@mkdir -p bin
+	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s -- -b ./bin/ v${GOLANGCI_VERSION}
+	@mv bin/golangci-lint $@
 
-
-install-golint:
-	GOLINT_CMD=$(shell command -v golint 2> /dev/null)
-ifndef GOLINT_CMD
-	go get github.com/golang/lint/golint
-endif
+.PHONY: lint
+lint: bin/golangci-lint ## Run linter
+	bin/golangci-lint run
 
 install-misspell:
 	MISSPELL_CMD=$(shell command -v misspell 2> /dev/null)
