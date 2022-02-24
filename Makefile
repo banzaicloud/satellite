@@ -28,19 +28,6 @@ _no-target-specified:
 list:
 	@$(MAKE) -pRrn : -f $(MAKEFILE_LIST) 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | sort
 
-LICENSEI_VERSION = 0.0.7
-bin/licensei: ## Install license checker
-	@mkdir -p ./bin/
-	curl -sfL https://raw.githubusercontent.com/goph/licensei/master/install.sh | bash -s v${LICENSEI_VERSION}
-
-.PHONY: license-check
-license-check: bin/licensei ## Run license check
-	@bin/licensei check
-
-.PHONY: license-cache
-license-cache: bin/licensei ## Generate license cache
-	@bin/licensei cache
-
 all: clean fmt vet docker push
 
 clean: ## Clean the working area and the project
@@ -91,28 +78,3 @@ bin/golangci-lint-${GOLANGCI_VERSION}:
 .PHONY: lint
 lint: bin/golangci-lint ## Run linter
 	bin/golangci-lint run
-
-install-misspell:
-	MISSPELL_CMD=$(shell command -v misspell 2> /dev/null)
-ifndef MISSPELL_CMD
-	go get -u github.com/client9/misspell/cmd/misspell
-endif
-
-install-ineffassign:
-	INEFFASSIGN_CMD=$(shell command -v ineffassign 2> /dev/null)
-ifndef INEFFASSIGN_CMD
-	go get -u github.com/gordonklaus/ineffassign
-endif
-
-install-gocyclo:
-	GOCYCLO_CMD=$(shell command -v gocyclo 2> /dev/null)
-ifndef GOCYCLO_CMD
-	go get -u github.com/fzipp/gocyclo
-endif
-
-ineffassign: install-ineffassign
-	ineffassign ${GOFILES_NOVENDOR}
-
-gocyclo: install-gocyclo
-	gocyclo -over 19 ${GOFILES_NOVENDOR}
-
